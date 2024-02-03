@@ -1,0 +1,77 @@
+version: "3.9"
+services:
+  my-sql-service:
+    image: mysql:latest
+    ports:
+      - "3366:3306"
+    container_name: my-sql-container
+    networks:
+      - eureka
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: user
+
+  mongo-service:
+    image: mongo
+    container_name: mongo-container
+    networks:
+      - eureka
+    ports:
+      - "27017:27017"
+
+  dashboard:
+    container_name: dashboard-container
+    networks:
+      - eureka
+    image: dashboard
+    ports:
+      - "8085:8085"
+    depends_on:
+      - mongo-service
+    restart: always
+
+  login:
+    container_name: login-container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://my-sql-service:3306/user
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    networks:
+      - eureka
+    image: login
+    ports:
+      - "8083:8083"
+    depends_on:
+      - my-sql-service
+    restart: always
+
+  gateway:
+    container_name: gateway-container
+    networks:
+      - eureka
+    image: gateway
+    ports:
+      - "9094:9094"
+    restart: always
+
+  eureka-server:
+    container_name: eureka-container
+    image: eureka-server
+    networks:
+      - eureka
+    ports:
+      - "80:8761"
+    restart: always
+
+  angular-blog:
+    image: angular-blog
+    container_name: angular-blog-container
+    ports:
+      - "8080:80"
+
+networks:
+  eureka:
+    driver: bridge

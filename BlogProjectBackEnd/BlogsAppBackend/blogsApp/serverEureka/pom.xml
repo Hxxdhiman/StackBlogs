@@ -6,7 +6,6 @@
 		<groupId>org.example</groupId>
 		<artifactId>blogsApp</artifactId>
 		<version>1.0-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.serverEureka</groupId>
 	<artifactId>serverEureka</artifactId>
