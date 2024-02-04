@@ -25,7 +25,6 @@ public class dashboardService implements dashboardServiceInterface {
     commentRepo cRepo;
     @Override
     public dashboardModel addBlog(dashboardModel model) {
-        model.setImgName(fileName);
         List<String> temp=new ArrayList<String>();
         model.setUserName(temp);
         return repo.save(model);
@@ -34,21 +33,6 @@ public class dashboardService implements dashboardServiceInterface {
     @Override
     public List<dashboardModel> showBlogs() {
         return repo.findAll();
-    }
-
-    @Override
-    public String uploadImage(String path, MultipartFile file) throws IOException {
-        String name=file.getOriginalFilename();
-        String randomId= UUID.randomUUID().toString();
-        fileName=randomId.concat(name.substring(name.lastIndexOf(".")));
-        String filePath=path+ File.separator+fileName;
-        File filee=new File(path);
-        if(!filee.exists())
-        {
-            filee.mkdir();
-        }
-        Files.copy(file.getInputStream(), Paths.get(filePath));
-        return name;
     }
 
     @Override

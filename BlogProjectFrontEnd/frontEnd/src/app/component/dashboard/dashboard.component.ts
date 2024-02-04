@@ -17,26 +17,21 @@ import { WatchLaterService } from '../../services/watch-later.service';
 export class DashboardComponent {
   
   constructor(private _blogser: BlogsService, private _addser: AddService,private blogss:ShowBlogsService,private watchLater:WatchLaterService) {}
-  Blogs:any;
-  BlogsId:any;
-  Bloging:any[]=[]
+  Blogs:blogger[]=[];
   userName:string=localStorage.getItem('userName')
-  reloadPage()
-  {
-    window.location.reload()
-  }
   ngOnInit(): void {
-    this.blogss.getBlogs().subscribe(
-      user=>{
-        console.log(user)
-        this.Blogs=user
-        this.Bloging=this.Blogs
+    this.blogss.getBlogs().subscribe({
+      next: (response) => {
+        this.Blogs=response
+        console.log(this.Blogs);
       },
-      error=>{
-        console.log(error)
+      error: (error) => {
+        console.error('Error fetching blog posts:', error);
       }
-    )
-  }
+    });
+  }
+
+  
   addToWatchLater(blogId:any)
   {
     this.watchLater.addToReadLater(this.userName,blogId).subscribe(

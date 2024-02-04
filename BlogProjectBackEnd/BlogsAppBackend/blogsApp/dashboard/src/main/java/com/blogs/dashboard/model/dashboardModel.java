@@ -2,6 +2,7 @@ package com.blogs.dashboard.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Document
@@ -13,7 +14,7 @@ public class dashboardModel {
    private String title;
    private String content;
    private String dob;
-   private String imgName;
+   private byte[] img;
    private List<String> userName;
 
    public dashboardModel() {
@@ -40,17 +41,6 @@ public class dashboardModel {
       super.finalize();
    }
 
-   public dashboardModel(String id, String author, String description, String title, String content, String dob, String imgName, List<String> userName) {
-      this.id = id;
-      this.author = author;
-      this.description = description;
-      this.title = title;
-      this.content = content;
-      this.dob = dob;
-      this.imgName = imgName;
-      this.userName = userName;
-   }
-
    @Override
    public String toString() {
       return "dashboardModel{" +
@@ -60,9 +50,20 @@ public class dashboardModel {
               ", title='" + title + '\'' +
               ", content='" + content + '\'' +
               ", dob='" + dob + '\'' +
-              ", imgName='" + imgName + '\'' +
+              ", img=" + Arrays.toString(img) +
               ", userName=" + userName +
               '}';
+   }
+
+   public dashboardModel(String id, String author, String description, String title, String content, String dob, byte[] img, List<String> userName) {
+      this.id = id;
+      this.author = author;
+      this.description = description;
+      this.title = title;
+      this.content = content;
+      this.dob = dob;
+      this.img = img;
+      this.userName = userName;
    }
 
    public String getId() {
@@ -113,12 +114,12 @@ public class dashboardModel {
       this.dob = dob;
    }
 
-   public String getImgName() {
-      return imgName;
+   public byte[] getImg() {
+      return img;
    }
 
-   public void setImgName(String imgName) {
-      this.imgName = imgName;
+   public void setImg(byte[] img) {
+      this.img = img;
    }
 
    public List<String> getUserName() {

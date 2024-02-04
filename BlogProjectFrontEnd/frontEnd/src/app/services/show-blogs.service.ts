@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { blogger } from '../model/blogger/blogger';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,9 @@ export class ShowBlogsService {
   constructor(private http:HttpClient) { }
   getBlogs()
   {
-    return this.http.get(`http://localhost:9094/dashboard/showBlogs`)
+    const headers=new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.get<blogger[]>(`http://localhost:9094/dashboard/showBlogs`,{headers})
   }
 }

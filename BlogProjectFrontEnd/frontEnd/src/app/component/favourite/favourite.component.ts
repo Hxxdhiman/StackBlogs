@@ -34,8 +34,7 @@ export class FavouriteComponent {
     this.watchlater.removeFav(this.userName,id).subscribe(
       user=>{
         console.log(user)
-        alert("Removed from favourites...")
-        this.router.navigate(["dashboard"])
+        window.location.reload()
       },
       error=>{
         console.log(error)

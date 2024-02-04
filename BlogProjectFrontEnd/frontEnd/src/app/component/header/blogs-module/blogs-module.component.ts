@@ -14,7 +14,7 @@ import { v4 as uuid } from 'uuid';
   styleUrl: './blogs-module.component.css'
 })
 export class BlogsModuleComponent implements OnInit{
-  blog=new blogger("","","","","","","")
+  blog=new blogger();
   file:any
   ngOnInit(){
 
@@ -25,16 +25,31 @@ export class BlogsModuleComponent implements OnInit{
   generateAutoId(): string {
     return uuid();
   }
+  base64textString:string;
+  img:ArrayBuffer;
   autoId = this.generateAutoId();
-  onChangeFileField(event:any)
+  onFileChange(event:any)
   {
-    this.file=event.target.files[0]
-    this.blog.id=this.autoId;
-    this.blog.imgName=this.file.name;
+  this.blog.id=this.autoId;
+  const files=event.target.files;
+  const file=files[0];
+  if(files && file){
+    const reader=new FileReader();
+    reader.onload=(readerEvt)=>{
+      this._handleReaderLoaded(readerEvt);
+    };
+    reader.readAsBinaryString(file);
   }
+}
+_handleReaderLoaded(readerEvt:any){
+const BinaryString=readerEvt.target.result;
+this.base64textString=btoa(BinaryString);
+console.log(this.base64textString);
+}
   addBlog()
   {
-    this.serv.postUserData(this.blog,this.file).subscribe({
+    this.blog.img=this.base64textString;
+    this.serv.postUserData(this.blog).subscribe({
       next:(response)=>{
         console.log(response)
         alert("done")
